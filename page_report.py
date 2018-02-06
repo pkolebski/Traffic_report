@@ -25,6 +25,7 @@ def to_sorted_df(urls_dict: dict):
     df = pd.DataFrame(columns=["url", "number"], index=[])
     df["url"] = list(urls_dict.keys())
     df["number"] = list(urls_dict.values())
+
     df.sort_values(by=["number", "url"], inplace=True, ascending=[False, True])
     return df
 
@@ -44,10 +45,9 @@ with open(sys.argv[1]) as log_file:
             else:
                 urls[url] = 1
 
-    urls = to_sorted_df(urls)
+urls = to_sorted_df(urls)
 
-for index, row in urls.iterrows():
-    print('"{}",{}'.format(row["url"], row["number"]))
+print(urls.to_csv(header=False, index=False))
 
 if invalid_lines > 0:
     sys.stderr.write("Invalid log lines: {}\n".format(invalid_lines))
